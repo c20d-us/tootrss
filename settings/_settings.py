@@ -1,8 +1,8 @@
 """
 These settings are common to all environments unless overriden
 """
-AWS_ACCESS_KEY_ID = "AKIAWNCRLAYCDGTLOMMI"
-AWS_ACCESS_KEY = "/GhqGRh3QEUzBUDyBFL7GqQ18+/tIk8pmepaXd/a"
+AWS_ACCESS_KEY_ID = "xxxx"
+AWS_ACCESS_KEY = "xxxx"
 AWS_REGION = "us-west-2"
 
 DYNAMO_DB_TABLE = "c20d-blog-feed-cache"
