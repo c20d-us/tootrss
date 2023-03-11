@@ -7,6 +7,7 @@ from os import getenv
 from typing import Dict, List, Tuple
 from settings import _settings
 
+
 def convert_string(in_string):
     """
     This function will try to convert strings to native Python types such as ints,

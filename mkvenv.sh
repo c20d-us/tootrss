@@ -21,9 +21,9 @@ source venv/bin/activate || quit_error "There was an error activating the venv"
 printf "done\n"
 
 printf "\nInstalling requirements ...\n"
-pip install -q --upgrade pip > /dev/null 2>&1 && \
-  pip install -q wheel > /dev/null 2>&1 && \
-  pip install -q -r "${REQS}" > /dev/null 2>&1 || quit_error "There was an error installing the requirements"
+pip3 install -q --upgrade pip > /dev/null 2>&1 && \
+  pip3 install -q wheel > /dev/null 2>&1 && \
+  pip3 install -q -r "${REQS}" > /dev/null 2>&1 || quit_error "There was an error installing the requirements"
 
 printf "\nmkvenv is complete!\n"
 
