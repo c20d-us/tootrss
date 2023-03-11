@@ -2,9 +2,8 @@
 A wrapper class for the feed cache stored in DynamoDB
 """
 import boto3
-import settings as S
 
-class FeedCache():
+class FeedCache(S=None):
     """
     FeedCache class
     """

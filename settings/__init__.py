@@ -1,12 +1,11 @@
 """
-Load variables from settings files, override with environment variables if allowed
+Load variables from settings file, override with environment variables if present
 """
+import re
 from ast import literal_eval
 from os import getenv
 from typing import Dict, List, Tuple
-
-from ._settings import *
-from ._overrides import *
+from settings import _settings
 
 def convert_string(in_string):
     """
@@ -25,7 +24,7 @@ def convert_string(in_string):
     return_val = None
     if isinstance(in_string, str):
         # It's a string. Is it intended to be a boolean?
-        if in_string.lower() in ['false', 'true']:
+        if in_string.lower() in ["false", "true"]:
             try:
                 return_val = literal_eval(in_string.capitalize())
             except ValueError:
@@ -41,9 +40,11 @@ def convert_string(in_string):
             # in_string is a number, make it an int or float as appropriate
             else:
                 # Check to see if it's a dict, a list, a tuple
-                if (not isinstance(return_val, Dict) and
-                        not isinstance(return_val, List) and
-                        not isinstance(return_val, Tuple)):
+                if (
+                    not isinstance(return_val, Dict)
+                    and not isinstance(return_val, List)
+                    and not isinstance(return_val, Tuple)
+                ):
                     # Is the value actually a float or int?
                     if float(return_val) is True:
                         return_val = float(return_val)
@@ -51,8 +52,11 @@ def convert_string(in_string):
                             return_val = int(return_val)
     return return_val
 
-# Override app settings with values from the environment, if present
-for constant in ENV_ALLOWED_OVERRIDES:
-    override = getenv(constant)
+
+# Override settings with values from the environment, if present
+for _var in [x for x in vars(_settings) if re.search("[A-Z]+", x)]:
+    override = getenv(_var)
     if override:
-        globals()[constant] = convert_string(override)
+        globals()[_var] = convert_string(override)
+    else:
+        globals()[_var] = getattr(_settings, _var)

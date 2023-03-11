@@ -1,5 +1,4 @@
-"""
-These settings are common to all environments unless overriden
+""" These settings are common to all environments unless overriden
 """
 AWS_ACCESS_KEY_ID = "xxxx"
 AWS_ACCESS_KEY = "xxxx"

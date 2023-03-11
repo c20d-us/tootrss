@@ -7,6 +7,6 @@ from modules.feed_cache import FeedCache
 
 print(f"Value: {S.FEED_URI}")
 
-fc = FeedCache()
+fc = FeedCache(S)
 
-fc.scan()
+# fc.scan()
