@@ -11,6 +11,7 @@ class FeedCache:
     """
     FeedCache class
     """
+
     def __init__(self):
         self._ddb = None
         try:
@@ -23,7 +24,9 @@ class FeedCache:
             )
         except Exception as ex:
             print(ex)
-            raise Exception(f"{datetime.now()}: Could not instantiate the FeedCache object.")
+            raise Exception(
+                f"{datetime.now()}: Could not instantiate the FeedCache object."
+            )
 
     def all_scan(self):
         if self._ddb:
@@ -36,4 +39,6 @@ class FeedCache:
             except Exception as ex:
                 print(ex)
         else:
-           raise Exception(f"{datetime.now()}: The DynamoDB resource is invalid.")
+            raise Exception(
+                f"{datetime.now()}: Cannot scan, the DynamoDB resource is invalid."
+            )

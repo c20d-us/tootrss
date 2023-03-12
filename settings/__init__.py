@@ -54,10 +54,7 @@ def convert_string(in_string):
     return return_val
 
 
-# Override settings with values from the environment, if present
+# Override settings with values from the environment, if present,
+# and if not set in the environment, use the value from the settings file
 for _var in [x for x in vars(_settings) if re.search("[A-Z]+", x)]:
-    override = getenv(_var)
-    if override:
-        globals()[_var] = convert_string(override)
-    else:
-        globals()[_var] = getattr(_settings, _var)
+    globals()[_var] = getenv(_var, getattr(_settings, _var))
