@@ -5,8 +5,10 @@ The Toot RSS client
 import settings as S
 from modules.feed_cache import FeedCache
 
-print(f"Value: {S.FEED_URI}")
+#mastodon_access_token = AccessKey(S.MASTODON_ACCESS_TOKEN).decrypt()
 
-fc = FeedCache(S)
-
-# fc.scan()
+try:
+    fc = FeedCache()
+    fc.all_scan()
+except Exception as ex:
+    print(ex)
