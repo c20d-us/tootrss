@@ -2,6 +2,7 @@
 """
 AWS_ACCESS_KEY_ID = "gAAAAABkDKAhtqpM_niQ_tCvP89NaqgyT4H4pNoBQ2grEQDYk3xU-FugTCKX6KAu_pxZDRqrggM_4gfkoQdSM-kfqt3AKu3l7QnGL2kuHvBOjE_H-bSwJng="
 AWS_ACCESS_KEY = "gAAAAABkDJ9ehQbqvrVnS7ZDHW9MQRiDMptVjuLdOpj8vx_a3YtWq1vFTVIl8EDPSVAJ3vBtn6-7844E7JlWwnSuWaxzlzNZiBv-njL1nQKdLPTQhcf-vBE8Nbt9MvAFlaMeCrya8cym"
+AWS_REGION = "us-west-2"
 
 DYNAMO_DB_TABLE = "c20d-blog-feed-cache"
 DYNAMO_P_KEY = "feed-title"
