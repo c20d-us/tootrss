@@ -5,8 +5,8 @@ AWS_ACCESS_KEY = "gAAAAABkDJ9ehQbqvrVnS7ZDHW9MQRiDMptVjuLdOpj8vx_a3YtWq1vFTVIl8E
 AWS_REGION = "us-west-2"
 
 DYNAMO_DB_TABLE = "c20d-blog-feed-cache"
-DYNAMO_P_KEY = "feed-title"
-DYNAMO_S_KEY = "item-guid"
+DYNAMO_P_KEY = "feed"
+DYNAMO_S_KEY = "item_id"
 
 FEED_URI = "https://c20d.blog/index.xml"
 

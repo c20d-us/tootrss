@@ -30,6 +30,10 @@ class FeedCache:
                 f"{datetime.now()}: Could not instantiate the FeedCache object."
             )
 
+    @property
+    def item_count(self):
+        return self._table.item_count
+
     def all_scan(self):
         if self._table:
             try:
@@ -44,15 +48,11 @@ class FeedCache:
                 f"{datetime.now()}: Cannot scan, the DynamoDB resource is invalid."
             )
 
-    @property
-    def item_count(self):
-        return self._table.item_count
-
     def get_item(self, p_key=None, s_key=None):
-        item = "nada"
+        item = None
         if p_key and s_key:
-            print(f"Looking for item {p_key}/{s_key} from {S.DYNAMO_DB_TABLE}.")
             response = self._table.get_item(
                 Key={S.DYNAMO_P_KEY: p_key, S.DYNAMO_S_KEY: s_key}
             )
+            item = response.get("Item")
         return item
