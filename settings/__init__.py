@@ -53,7 +53,6 @@ def convert_string(in_string):
                             return_val = int(return_val)
     return return_val
 
-
 # Override settings with values from the environment, if present,
 # and if not set in the environment, use the value from the settings file
 for _var in [x for x in vars(_settings) if re.search("[A-Z]+", x)]:

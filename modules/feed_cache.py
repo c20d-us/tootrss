@@ -5,7 +5,7 @@ import boto3
 import settings as S
 from botocore.exceptions import ClientError
 from datetime import datetime
-from .access_key import AccessKey
+from .encrypted_token import EncryptedToken
 
 
 class FeedCache:
@@ -19,8 +19,8 @@ class FeedCache:
         try:
             self._ddb = boto3.resource(
                 "dynamodb",
-                aws_access_key_id=AccessKey().decrypt(S.AWS_ACCESS_KEY_ID),
-                aws_secret_access_key=AccessKey().decrypt(S.AWS_ACCESS_KEY),
+                aws_access_key_id=EncryptedToken(S.FERNET_KEY, S.AWS_ACCESS_KEY_ID).decrypt(),
+                aws_secret_access_key=EncryptedToken(S.FERNET_KEY, S.AWS_ACCESS_KEY).decrypt(),
                 region_name=S.AWS_REGION,
             )
             self._table = self._ddb.Table(f"{S.DYNAMO_DB_TABLE}")
