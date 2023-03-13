@@ -2,62 +2,141 @@
 A wrapper class for the feed cache stored in DynamoDB
 """
 import boto3
-import settings as S
-from botocore.exceptions import ClientError
-from datetime import datetime
 from .encrypted_token import EncryptedToken
 
 
 class FeedCache:
     """
-    FeedCache class
+    A class to manage the RSS feed cache stored in AWS DynamoDB
+
+    Parameters
+    ----------
+    access_key_id: str
+        The AWS access key ID
+    access_key: str
+        The AWS secret access key
+    region: str
+        The AWS region of the DynamoDB, i.e., "us-west-2"
+    table_name: str
+        The name of the DynamoDB table to use
+    p_key_name: str
+        The name of the table's partition key
+    s_key_name: str
+        The name of the table's sort key
+
+    Methods
+    -------
+    get_all()
+        Retrieves all record items from the DynamoDB
+    get_item()
+        Retrieves a single item record from the DynamoDB
+    put_item()
+        Puts an item into the DynamoDb (overwrites if already present)
     """
 
-    def __init__(self):
-        self._ddb = None
+    def __init__(self, access_key_id: str, access_key: str, region: str, table_name: str, p_key_name: str, s_key_name: str) -> None:
+        """
+        The initializer
+
+        Raises
+        ------
+        Exception:
+            If the Fernet key is not valid, a generic Exception is raised
+        """
         self._table = None
+        self._p_key_name = p_key_name
+        self._s_key_name = s_key_name
         try:
-            self._ddb = boto3.resource(
+            ddb = boto3.resource(
                 "dynamodb",
-                aws_access_key_id=EncryptedToken(S.FERNET_KEY, S.AWS_ACCESS_KEY_ID).decrypt(),
-                aws_secret_access_key=EncryptedToken(S.FERNET_KEY, S.AWS_ACCESS_KEY).decrypt(),
-                region_name=S.AWS_REGION,
+                aws_access_key_id=access_key_id,
+                aws_secret_access_key=access_key,
+                region_name=region,
             )
-            self._table = self._ddb.Table(f"{S.DYNAMO_DB_TABLE}")
+            self._table = ddb.Table(table_name)
         except Exception as ex:
             print(ex)
             raise Exception(
-                f"{datetime.now()}: Could not instantiate the FeedCache object."
+                f"Could not instantiate the FeedCache object."
             )
 
-    @property
-    def item_count(self):
-        return self._table.item_count
+    def get_all(self) -> list[dict]:
+        """
+        Scan the entire DynamoDB cache and return all records.
+        
+        Parameters
+        ----------
+        None
 
-    def all_scan(self):
-        if self._table:
-            try:
-                response = self._table.scan()
-                print("The query returned the following items:")
-                for item in response["Items"]:
-                    print(item)
-            except Exception as ex:
-                print(ex)
-        else:
-            raise Exception(
-                f"{datetime.now()}: Cannot scan, the DynamoDB resource is invalid."
-            )
+        Returns
+        -------
+        list[dict]: A list of item dictionaries from the cache DB
 
-    def get_item(self, p_key=None, s_key=None):
+        Raises
+        ------
+        Exception
+            If the table can't be scanned, raises a generic Exception
+        """
+        items = None
+        try:
+            response = self._table.scan()
+            items = response["Items"]
+        except Exception as ex:
+            raise Exception(f"get_all encountered exception {ex}")
+        return items
+
+    def get_item(self, p_key: str, s_key: str) -> dict:
+        """
+        Get a single item from the DynamoDC cache, if it exists
+        
+        Parameters
+        ----------
+        p_key: str
+            The value for the DynamoDB partition key
+        s_key: str
+            The value for the DynamoDB sort key
+
+        Returns
+        -------
+        dict: An item dictionary
+
+        Raises
+        ------
+        Exception
+            If the get action fails, raises a generic Exception
+        """
         item = None
-        if p_key and s_key:
+        try:
             response = self._table.get_item(
-                Key={S.DYNAMO_P_KEY: p_key, S.DYNAMO_S_KEY: s_key}
+                Key={self._p_key_name: p_key, self._s_key_name: s_key}
             )
             item = response.get("Item")
+        except Exception as ex:
+            raise Exception(f"get_item encountered exception {ex}")
         return item
 
-    def put_item(self, p_key=None, S_key=None, data=None):
+    def put_item(self, p_key: str, s_key: str, data: dict) -> bool:
+        """
+        Get a single item from the DynamoDC cache, if it exists
+        
+        Parameters
+        ----------
+        p_key: str
+            The value for the DynamoDB partition key
+        s_key: str
+            The value for the DynamoDB sort key
+        data: dict
+            The item data, in dictionary form
+
+        Returns
+        -------
+        bool: Whether the put_item action succeeded
+
+        Raises
+        ------
+        Exception
+            If the put_item action fails, raises a generic Exception
+        """
         put_success = False
-        if p_key and s_key and data:
-            return
+        #if p_key and s_key and data:
+        return put_success

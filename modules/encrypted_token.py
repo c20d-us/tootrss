@@ -1,31 +1,67 @@
 """
-A wrapper class for decrypting Fernet-encrypted tokens
+A module for handling Fernet-encrypted tokens
 """
-from cryptography.fernet import Fernet, InvalidToken
+from cryptography.fernet import Fernet
 
 
 class EncryptedToken:
     """
-    EncryptedToken class
+    A class to manage tokens encrypted with Fernet
+
+    Parameters
+    ----------
+    fernet_key : str
+        The Fernet key that was used to encrypt the token
+    encrypted_token : str
+        The Fernet-encrypted token that will be decrypted, utf-8 encoded
+
+    Methods
+    -------
+    decrypt()
+        Decrypts the Fernet-encrypted token
     """
 
-    def __init__(self, fernet_key, encrypted_token):
+    def __init__(self, fernet_key: str, encrypted_token: str) -> None:
+        """
+        The initializer
+
+        Raises
+        ------
+        Exception:
+            If the Fernet key is not valid, a generic Exception is raised
+        """
         self._F = None
         self._token = encrypted_token
         try:
             self._F = Fernet(fernet_key)
-        except TypeError:
+        except:
             raise Exception(
-                f"The fernet key was invalid: {fernet_key}"
+                f"The supplied fernet key was invalid: {fernet_key}"
             )
 
-    def decrypt(self):
+    def decrypt(self) -> str:
+        """
+        Decrypt the Fernet-encrypted token.
+        
+        Parameters
+        ----------
+        None
+
+        Returns
+        -------
+        str: The unencrypted token
+
+        Raises
+        ______
+        Exception:
+            If the encrypted token is not valid, a generic Exception is raised
+
+        """
         decrypted_token = None
-        if self._F and self._token:
-            try:
-                decrypted_token = self._F.decrypt(self._token).decode("utf-8")
-            except InvalidToken:
-                raise Exception(
-                    f"The encrypted token was invalid: {self._token=}"
-                )
+        try:
+            decrypted_token = self._F.decrypt(self._token).decode("utf-8")
+        except:
+            raise Exception(
+                f"The encrypted token was invalid: {self._token=}"
+            )
         return decrypted_token

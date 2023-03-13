@@ -9,18 +9,17 @@ class Feed:
     Feed class
     """
 
-    def __init__(self, feed_uri=None):
-        self._data = None
-        self._title = None
+    def __init__(self, feed_uri: str = None) -> None:
         self._items = {}
-        try:
-            self._data = feedparser.parse(feed_uri)
+        self._title = None
+        self._data = feedparser.parse(feed_uri)
+        if not self._data.bozo:
             self._title = self._data.feed.title
             self._load_items()
-        except Exception as _ex:
-            print(_ex)
+        else:
+            raise Exception(f"Could not parse the feed '{feed_uri}'")
 
-    def _make_datestamp(self, date_tuple=None):
+    def _make_datestamp(self, date_tuple: tuple = None) -> str:
         d = "0" * 14
         if date_tuple:
             d = f"{date_tuple[0]:04}"
@@ -28,7 +27,8 @@ class Feed:
                 d = "".join([d, f"{date_tuple[i]:02}"])
         return d
 
-    def _load_items(self):
+    def _load_items(self) -> bool:
+        loaded = False
         if self._data:
             for entry in self._data.entries:
                 item_key = "-".join(
@@ -39,15 +39,17 @@ class Feed:
                     "link": entry.link,
                     "tooted": False,
                 }
+            loaded = True
+        return loaded
 
     @property
-    def title(self):
+    def title(self) -> str:
         return self._title
 
     @property
-    def items(self):
+    def items(self) -> dict:
         return self._items
 
     @property
-    def item_count(self):
+    def item_count(self) -> int:
         return len(self._items)

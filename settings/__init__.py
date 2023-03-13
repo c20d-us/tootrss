@@ -8,7 +8,7 @@ from typing import Dict, List, Tuple
 from settings import _settings
 
 
-def convert_string(in_string):
+def convert_string(in_string: str = None):
     """
     This function will try to convert strings to native Python types such as ints,
     floats, booleans, dicts, lists, and tuples. For numeric types, the intent is
