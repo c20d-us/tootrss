@@ -56,3 +56,8 @@ class FeedCache:
             )
             item = response.get("Item")
         return item
+
+    def put_item(self, p_key=None, S_key=None, data=None):
+        put_success = False
+        if p_key and s_key and data:
+            return
