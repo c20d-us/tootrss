@@ -5,15 +5,13 @@ AWS_ACCESS_KEY = "gAAAAABkDJ9ehQbqvrVnS7ZDHW9MQRiDMptVjuLdOpj8vx_a3YtWq1vFTVIl8E
 AWS_REGION = "us-west-2"
 
 DYNAMO_DB_TABLE = "c20d-blog-feed-cache"
-DYNAMO_P_KEY = "feed"
-DYNAMO_S_KEY = "item_id"
+DYNAMO_DB_P_KEY_NAME = "feed"
+DYNAMO_DB_S_KEY_NAME = "item_id"
 
 FEED_URI = "https://c20d.blog/index.xml"
 
 FERNET_KEY = None
 
 MASTODON_ACCESS_TOKEN = "gAAAAABkDKB4MtryLxINIeTZ92JCYNXTfhTXbk3CgtTfxbNBlptEWDcmdcPmjQ8GyevOOueFWxKjYkxo2eZcg7LTgVZ61DZPWg83gMTyUsM0Og0VUM_eGcRhYOfuBakmW_bG8Bco8QpN"
-MASTODON_INSTANCE_URI = "https://hachyderm.io"
-MASTODON_STATUS_ENDPOINT = "/api/v1/statuses"
-MASTODON_STATUS_METHOD = "post"
+MASTODON_BASE_URL = "https://hachyderm.io"
 MASTODON_STATUS_VISIBILITY = "direct"

@@ -115,9 +115,9 @@ class FeedCache:
             raise Exception(f"get_item encountered exception {ex}")
         return item
 
-    def put_item(self, p_key: str, s_key: str, data: dict) -> bool:
+    def put_item(self, p_key: str, s_key: str, link: str, title: str, tooted: bool) -> bool:
         """
-        Get a single item from the DynamoDC cache, if it exists
+        Put a single item into the DynamoDC cache
         
         Parameters
         ----------
@@ -125,8 +125,12 @@ class FeedCache:
             The value for the DynamoDB partition key
         s_key: str
             The value for the DynamoDB sort key
-        data: dict
-            The item data, in dictionary form
+        link: str
+            The item link
+        title: str
+            The item title
+        tooted: bool
+            Whether the item has been tooted
 
         Returns
         -------
@@ -138,5 +142,16 @@ class FeedCache:
             If the put_item action fails, raises a generic Exception
         """
         put_success = False
-        #if p_key and s_key and data:
+        try:
+            response = self._table.put_item(
+                Item={
+                    self._p_key_name: p_key,
+                    self._s_key_name: s_key,
+                    'link': link,
+                    'title': title,
+                    'tooted': tooted
+                }
+            )
+        except:
+            raise Exception("Problem!")
         return put_success
